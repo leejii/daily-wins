@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Wins</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="logo">✦ Daily Wins</div>
+      <p class="subtitle">오늘의 성취를 기록하세요</p>
+    </header>
+
+    <form id="dailyForm" class="form-card" novalidate>
+
+      <!-- 날짜 -->
+      <div class="field">
+        <label for="date">날짜</label>
+        <input type="date" id="date" name="date" required />
+      </div>
+
+      <!-- 수행 목표 -->
+      <div class="field">
+        <label>수행 목표</label>
+        <div class="activity-grid">
+          <div class="activity-chip">
+            <input type="radio" name="activity" id="act-exercise" value="운동" />
+            <label for="act-exercise">🏋️ 운동</label>
+          </div>
+          <div class="activity-chip">
+            <input type="radio" name="activity" id="act-stretch" value="스트레칭" />
+            <label for="act-stretch">🧘 스트레칭</label>
+          </div>
+          <div class="activity-chip">
+            <input type="radio" name="activity" id="act-reading" value="독서" />
+            <label for="act-reading">📖 독서</label>
+          </div>
+          <div class="activity-chip">
+            <input type="radio" name="activity" id="act-english" value="영어" />
+            <label for="act-english">💬 영어</label>
+          </div>
+          <div class="activity-chip">
+            <input type="radio" name="activity" id="act-speech" value="말" />
+            <label for="act-speech">🎙️ 말</label>
+          </div>
+          <div class="activity-chip">
+            <input type="radio" name="activity" id="act-etc" value="기타" />
+            <label for="act-etc">✏️ 기타</label>
+          </div>
+        </div>
+        <div class="custom-input" id="customInput">
+          <input type="text" id="customActivity" placeholder="직접 입력해주세요" maxlength="30" />
+        </div>
+      </div>
+
+      <!-- 수행 시간 -->
+      <div class="field">
+        <label>수행 시간</label>
+        <div class="duration-display">
+          <span id="durationValue">30</span><em>분</em>
+        </div>
+        <input
+          type="range"
+          id="duration"
+          name="duration"
+          min="10"
+          max="60"
+          step="5"
+          value="30"
+        />
+        <div class="duration-labels">
+          <span>10분</span>
+          <span>60분</span>
+        </div>
+      </div>
+
+      <!-- 메모 -->
+      <div class="field">
+        <label for="memo">메모</label>
+        <textarea
+          id="memo"
+          name="memo"
+          rows="3"
+          placeholder="오늘의 간단한 기록을 남겨보세요"
+          maxlength="200"
+        ></textarea>
+      </div>
+
+      <!-- 버튼 -->
+      <div class="actions">
+        <button type="button" id="cancelBtn" class="btn-cancel">취소</button>
+        <button type="submit" id="saveBtn" class="btn-save">
+          <div class="spinner"></div>
+          <span class="save-text">저장</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
