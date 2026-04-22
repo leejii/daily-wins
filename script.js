@@ -15,6 +15,7 @@ const toast           = document.getElementById('toast');
 // ─── Init ──────────────────────────────────────────────
 
 dateInput.value = todayString();
+setDefaultTimeslot();
 
 updateSliderUI();
 
@@ -54,6 +55,7 @@ function resetForm() {
   dateInput.value = todayString();
   customInputDiv.style.display = 'none';
   updateSliderUI();
+  setDefaultTimeslot();
 }
 
 // ─── Submit ────────────────────────────────────────────
@@ -77,8 +79,15 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
+  const checkedTimeslot = document.querySelector('input[name="timeslot"]:checked');
+  if (!checkedTimeslot) {
+    showToast('시간대를 선택해주세요', 'error');
+    return;
+  }
+
   const payload = {
     date:     dateInput.value,
+    timeslot: checkedTimeslot.value,
     activity: activityValue,
     duration: durationSlider.value,
     memo:     document.getElementById('memo').value.trim(),
@@ -87,17 +96,25 @@ form.addEventListener('submit', async (e) => {
   setLoading(true);
 
   try {
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode:   'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body:   JSON.stringify(payload),
+    const res  = await fetch(SCRIPT_URL, {
+      method:   'POST',
+      headers:  { 'Content-Type': 'text/plain' },
+      body:     JSON.stringify(payload),
     });
 
-    showToast('저장되었습니다', 'success');
-    resetForm();
-  } catch {
-    showToast('저장에 실패했습니다. 다시 시도해주세요', 'error');
+    const text = await res.text();
+    let json;
+    try { json = JSON.parse(text); } catch { json = null; }
+
+    if (res.ok && json?.result === 'success') {
+      showToast('저장되었습니다', 'success');
+      resetForm();
+    } else {
+      const reason = json?.message || `오류 코드: ${res.status}`;
+      showToast(`저장 실패 — ${reason}`, 'error');
+    }
+  } catch (err) {
+    showToast(`저장 실패 — ${err.message}`, 'error');
   } finally {
     setLoading(false);
   }
@@ -127,4 +144,14 @@ function showToast(message, type = 'success') {
 
 function todayString() {
   return new Date().toLocaleDateString('sv-SE'); // 'YYYY-MM-DD'
+}
+
+function setDefaultTimeslot() {
+  const hour = new Date().getHours();
+  let value = '저녁';
+  if      (hour >= 5  && hour < 12) value = '오전';
+  else if (hour >= 12 && hour < 18) value = '오후';
+
+  const radio = document.querySelector(`input[name="timeslot"][value="${value}"]`);
+  if (radio) radio.checked = true;
 }

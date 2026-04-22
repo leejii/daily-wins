@@ -22,9 +22,28 @@
         <input type="date" id="date" name="date" required />
       </div>
 
+      <!-- 시간대 -->
+      <div class="field">
+        <p class="field-group-label">시간대</p>
+        <div class="activity-grid">
+          <div class="activity-chip">
+            <input type="radio" name="timeslot" id="time-forenoon" value="오전" />
+            <label for="time-forenoon">☀️ 오전</label>
+          </div>
+          <div class="activity-chip">
+            <input type="radio" name="timeslot" id="time-afternoon" value="오후" />
+            <label for="time-afternoon">🌤️ 오후</label>
+          </div>
+          <div class="activity-chip">
+            <input type="radio" name="timeslot" id="time-evening" value="저녁" />
+            <label for="time-evening">🌇 저녁</label>
+          </div>
+        </div>
+      </div>
+
       <!-- 수행 목표 -->
       <div class="field">
-        <label>수행 목표</label>
+        <p class="field-group-label">수행 목표</p>
         <div class="activity-grid">
           <div class="activity-chip">
             <input type="radio" name="activity" id="act-exercise" value="운동" />
@@ -44,7 +63,7 @@
           </div>
           <div class="activity-chip">
             <input type="radio" name="activity" id="act-speech" value="말" />
-            <label for="act-speech">🎙️ 말</label>
+            <label for="act-speech">🎤 말</label>
           </div>
           <div class="activity-chip">
             <input type="radio" name="activity" id="act-etc" value="기타" />
@@ -58,7 +77,7 @@
 
       <!-- 수행 시간 -->
       <div class="field">
-        <label>수행 시간</label>
+        <p class="field-group-label">수행 시간</p>
         <div class="duration-display">
           <span id="durationValue">30</span><em>분</em>
         </div>

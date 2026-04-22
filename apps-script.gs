@@ -5,7 +5,14 @@
 // 생성된 URL을 script.js의 SCRIPT_URL에 붙여넣으세요.
 
 const SHEET_NAME   = 'Daily Wins';
-const HEADER_ROW   = ['날짜', '수행 목표', '수행 시간(분)', '메모', '기록 시각'];
+const HEADER_ROW   = ['날짜', '시간대', '수행 목표', '수행 시간(분)', '메모', '기록 시각'];
+
+// Apps Script 에디터에서 직접 실행해 시트를 미리 초기화합니다.
+function initialize() {
+  const sheet = getOrCreateSheet();
+  SpreadsheetApp.getActiveSpreadsheet().setActiveSheet(sheet);
+  Logger.log('초기화 완료: ' + sheet.getName());
+}
 
 function doPost(e) {
   try {
@@ -14,6 +21,7 @@ function doPost(e) {
 
     sheet.appendRow([
       data.date     || '',
+      data.timeslot || '',
       data.activity || '',
       Number(data.duration) || 0,
       data.memo     || '',
