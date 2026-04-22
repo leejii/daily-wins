@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Wins — 통계</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="logo">✦ Daily Wins</div>
+      <p class="subtitle">나의 성취 기록</p>
+    </header>
+
+    <div class="nav-bar nav-bar--stats">
+      <a href="index.html" class="btn-stats">← 입력</a>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="state-box">
+      <div class="loading-ring"></div>
+      <p>데이터를 불러오는 중...</p>
+    </div>
+
+    <!-- Empty -->
+    <div id="empty-state" class="state-box" style="display:none">
+      <p>아직 기록이 없습니다.</p>
+      <a href="index.html" class="empty-link">첫 기록 남기기 →</a>
+    </div>
+
+    <!-- Content -->
+    <div id="stats-content" style="display:none">
+
+      <!-- Summary cards -->
+      <div class="summary-cards">
+        <div class="summary-card">
+          <span class="summary-value" id="total-count">—</span>
+          <span class="summary-label">총 기록</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-value" id="streak-count">—</span>
+          <span class="summary-label">연속 달성</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-value" id="top-activity">—</span>
+          <span class="summary-label">최다 활동</span>
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div class="stats-card">
+        <div class="stats-card-header">
+          <button id="cal-prev" class="cal-nav">&#8249;</button>
+          <span id="cal-title" class="stats-card-title"></span>
+          <button id="cal-next" class="cal-nav">&#8250;</button>
+        </div>
+        <div id="cal-grid" class="cal-grid"></div>
+        <div class="cal-legend">
+          <span class="cal-legend-item"><i class="legend-dot dot-today"></i>오늘</span>
+          <span class="cal-legend-item"><i class="legend-dot dot-empty"></i>기록 없음</span>
+          <span class="cal-legend-item"><i class="legend-dot dot-one"></i>1회</span>
+          <span class="cal-legend-item"><i class="legend-dot dot-multi"></i>2회 이상</span>
+        </div>
+        <div id="cal-detail" class="cal-detail" style="display:none">
+          <div class="cal-detail-header">
+            <span id="cal-detail-date" class="cal-detail-date"></span>
+            <button id="cal-detail-close" class="cal-detail-close">✕</button>
+          </div>
+          <ul id="cal-detail-list" class="cal-detail-list"></ul>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="stats-card">
+        <div class="chart-tabs">
+          <button class="chart-tab active" data-tab="activity">활동별 횟수</button>
+          <button class="chart-tab" data-tab="weekly">주간 시간</button>
+        </div>
+        <div id="tab-activity" class="chart-panel">
+          <canvas id="activity-chart"></canvas>
+        </div>
+        <div id="tab-weekly" class="chart-panel" style="display:none">
+          <canvas id="weekly-chart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="stats.js"></script>
+</body>
+</html>
