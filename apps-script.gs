@@ -44,8 +44,8 @@ function doGet() {
     }
     const tz   = Session.getScriptTimeZone();
     const data = rows.slice(1)
-      .filter(row => row[0] !== '')
-      .map(row => ({
+      .map((row, i) => ({
+        rowIndex: i + 2,
         date:     row[0] instanceof Date
                   ? Utilities.formatDate(row[0], tz, 'yyyy-MM-dd')
                   : String(row[0]),
@@ -53,7 +53,8 @@ function doGet() {
         activity: row[2] || '',
         duration: Number(row[3]) || 0,
         memo:     row[4] || '',
-      }));
+      }))
+      .filter(d => d.date !== '');
     return jsonResponse({ result: 'success', data });
   } catch (err) {
     return jsonResponse({ result: 'error', message: err.message });
@@ -62,9 +63,28 @@ function doGet() {
 
 function doPost(e) {
   try {
-    const data  = JSON.parse(e.postData.contents);
-    const sheet = getOrCreateSheet();
+    const data   = JSON.parse(e.postData.contents);
+    const sheet  = getOrCreateSheet();
+    const action = data.action || 'create';
 
+    if (action === 'delete') {
+      sheet.deleteRow(data.rowIndex);
+      return jsonResponse({ result: 'success' });
+    }
+
+    if (action === 'update') {
+      sheet.getRange(data.rowIndex, 1, 1, 6).setValues([[
+        data.date     || '',
+        data.timeslot || '',
+        data.activity || '',
+        Number(data.duration) || 0,
+        data.memo     || '',
+        Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss'),
+      ]]);
+      return jsonResponse({ result: 'success' });
+    }
+
+    // action === 'create' (default)
     sheet.appendRow([
       data.date     || '',
       data.timeslot || '',
@@ -73,7 +93,6 @@ function doPost(e) {
       data.memo     || '',
       Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss'),
     ]);
-
     return jsonResponse({ result: 'success' });
   } catch (err) {
     return jsonResponse({ result: 'error', message: err.message }, 500);
